@@ -37,11 +37,13 @@ mongoose.connect("mongodb://localhost/newsNotes", { useNewUrlParser: true });
 
 // Routes
 
-// A GET route for scraping the echoJS website
 app.get("/scrape", function(req, res) {
+    db.Article.deleteMany({}).then(function(data){
+        res.send("removed")
+    }).then(function(){
     axios.get("https://www.delish.com/food-news/").then(function(response){
         var $ = cheerio.load(response.data)
-
+       
         $(".full-item").each(function(i, element){
 
              var result = {}
@@ -50,19 +52,37 @@ app.get("/scrape", function(req, res) {
              result.image= $(this).children(".full-item-image").children(".lazyimage").data("src")
              result.title = $(this).children(".full-item-content").children("a").text()
              result.summary = $(this).children(".full-item-content").children(".full-item-dek").children("p").text()
+             result.saved = false
 
              db.Article.create(result)
              .then(function(dbArticle) {
-               // View the added result in the console
-               console.log(dbArticle);
+               console.log(dbArticle)
              })
              .catch(function(err) {
                // If an error occurred, log it
                console.log(err);
              });
         })
-        console.log(results)
+       
+    
     })
+    })
+})
+
+app.get("/articles", function(req,res){
+    db.Article.find({}).then(function(dbArticle){
+        res.json(dbArticle)
+    })
+})
+
+app.post("/savedArticles", function(req,res){
+    var id = req.body.id
+    
+    db.Article.findOneAndUpdate({_id: id}, {$set: {saved: true}}).then(function(dbArticle){
+        res.json(dbArticle)
+    }).catch(function(error){
+        console.log(error)
+      })
 })
 
 
@@ -73,32 +93,6 @@ app.get("/", function(req,res){
     })
     
 })
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
     // Start the server

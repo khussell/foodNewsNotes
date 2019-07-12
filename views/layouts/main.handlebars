@@ -1,43 +1,80 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-  <!-- Compiled and minified CSS -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
-  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css"
-    integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
- <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-  <!-- Compiled and minified JavaScript -->
-  <script src="https://code.jquery.com/jquery-3.4.1.min.js"
-    integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css"
+        integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"
+        integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 
-  <!-- Custom CSS -->
-  <link rel="stylesheet" href="/styles/styles.css" media="screen" title="no title" charset="utf-8">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/styles/styles.css" media="screen" title="no title" charset="utf-8">
 
-  <title>Food News</title>
+    <title>Food News</title>
 
 </head>
 
 <body>
 
-<nav>
-    <div class="nav-wrapper teal lighten-2">
-      <a href="#" class="brand-logo">Food News</a>
-      <ul id="nav-mobile" class="right hide-on-med-and-down">
-        <li><a href="/">Home</a></li>
-        <li><a href="/saved">Saved Articles</a></li>
-        <li><a class="btn scrapeButton" href="collapsible.html">Scrape New Articles!</a></li>
-      </ul>
-    </div>
-  </nav>
+    <nav>
+        <div class="nav-wrapper teal lighten-2">
+            <a href="#" class="brand-logo">Food News</a>
+            <ul id="nav-mobile" class="right hide-on-med-and-down">
+                <li><a href="/">Home</a></li>
+                <li><a href="/saved">Saved Articles</a></li>
+                <li><a class="btn scrapeButton">Scrape New Articles!</a></li>
+            </ul>
+        </div>
+    </nav>
 
 
-  {{{body}}}
+    {{{body}}}
+
+
+    <script>
+        $(".container").empty()
+
+        $(".scrapeButton").on("click", function () {
+            $.get("/articles").done(function (data) {
+                //console.log(data)
+                for (var i = 0; i < data.length; i++) {
+
+
+                    var newCard = $("<div class='row'><div class='col s12 m7 offset-l3 l6'><div class='card'><div class='card-image'><img src='" + data[i].image + "'></div><div class='center-align card-content'><p class='card-title'><a href='" + data[i].a + "'>" + data[i].title + "</a></p><p>" + data[i].summary + "</p></div><div class='center-align card-action'><a id='saveArticle' class='btn saveArticle' data-savearticleid='" + data[i]._id + "'>Save Article</a></div></div></div></div>")
+
+                    $(".container").append(newCard)
+
+
+                }
+            })
+        })
+
+
+        $("body").on("click", "#saveArticle", function () {
+            var id = $(this).data("savearticleid")
+            console.log(id)
+            $.ajax({
+                method: "POST",
+                url: "/savedArticles",
+                data: {
+                    id: id,
+                }
+            }).then(function (data) {
+                    console.log(data);
+            })
+               
+        })
+    </script>
 </body>
 
 </html>
