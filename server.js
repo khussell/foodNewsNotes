@@ -1,6 +1,16 @@
 var express = require("express");
 var logger = require("morgan");
 var mongoose = require("mongoose");
+var exphbs = require("express-handlebars");
+var app = express()
+
+app.engine(
+    "handlebars",
+    exphbs({
+      defaultLayout: "main"
+    })
+  );
+  app.set("view engine", "handlebars");
 
 // Stuff for scraping
 var axios = require("axios");
@@ -11,8 +21,7 @@ var db = require("./models");
 
 var PORT = 3030;
 
-// Initialize Express
-var app = express();
+
 
 //middleware
 // Use morgan logger for logging requests
@@ -54,6 +63,15 @@ app.get("/scrape", function(req, res) {
         })
         console.log(results)
     })
+})
+
+
+app.get("/", function(req,res){
+    db.Article.find({}).then(function(dbArticle){
+        console.log(dbArticle)
+        res.render("index", {articles: dbArticle})
+    })
+    
 })
 
 
