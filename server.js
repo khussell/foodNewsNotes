@@ -102,6 +102,13 @@ app.get("/saved", function(req, res){
     })
 })
 
+app.post("/deletedArticle", function(req,res){
+    var id = req.body.id
+    db.Article.findOneAndUpdate({_id:id}, {$set: {saved: false}}).then(function(dbArticle){
+        res.json(dbArticle)
+    })
+})
+
     // Start the server
 app.listen(PORT, function() {
     console.log("App running on port " + PORT + "!");

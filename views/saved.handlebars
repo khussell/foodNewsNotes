@@ -8,13 +8,13 @@
         <div class="card-image">
           <img src="{{image}}">
         </div>
-        <div class="card-content">
+        <div class="center-align card-content">
           <p class="card-title"><a href="{{a}}">{{title}}</a></p>
           <p>{{summary}}</p>
         </div>
-        <div class="card-action">
+        <div class="center-align card-action">
           <a class="makeNote" data-makeNoteId="{{_id}}">Make a note</a>
-          <a class="deleteArticle" data-deleteArticleId="{{_id}}">Delete article</a>
+          <a id="deleteArticle" data-deletearticleid="{{_id}}">Delete article</a>
         </div>
       </div>
     </div>
@@ -23,4 +23,19 @@
 </div>
 <script>
     $(".container").show()
+    $(".scrapeButton").hide()
+
+    $("body").on("click", "#deleteArticle", function(){
+        var id = $(this).data("deletearticleid")
+        $.ajax({
+            url: "/deletedArticle",
+            method: "POST",
+            data: {
+                id: id
+            }
+        }).then(function(data){
+            console.log(data)
+            location.reload()
+        })
+    })
 </script>
