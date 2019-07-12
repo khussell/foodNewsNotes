@@ -1,0 +1,26 @@
+<h6>The best kind of news is:</h6>
+<h1>Food News</h1>
+<div class="container">
+{{#each articles}}
+  <div class="row">
+    <div class="col s12 m7 offset-l3 l6">
+      <div class="card">
+        <div class="card-image">
+          <img src="{{image}}">
+        </div>
+        <div class="card-content">
+          <p class="card-title"><a href="{{a}}">{{title}}</a></p>
+          <p>{{summary}}</p>
+        </div>
+        <div class="card-action">
+          <a class="makeNote" data-makeNoteId="{{_id}}">Make a note</a>
+          <a class="deleteArticle" data-deleteArticleId="{{_id}}">Delete article</a>
+        </div>
+      </div>
+    </div>
+  </div>
+{{/each}}
+</div>
+<script>
+    $(".container").show()
+</script>

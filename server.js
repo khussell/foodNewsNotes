@@ -89,11 +89,18 @@ app.post("/savedArticles", function(req,res){
 app.get("/", function(req,res){
     db.Article.find({}).then(function(dbArticle){
         console.log(dbArticle)
-        res.render("index", {articles: dbArticle})
+        res.render("index")
     })
     
 })
 
+
+app.get("/saved", function(req, res){
+    db.Article.find({saved: true}).then(function(dbArticle){
+        console.log(dbArticle)
+        res.render("saved", {articles: dbArticle})
+    })
+})
 
     // Start the server
 app.listen(PORT, function() {
