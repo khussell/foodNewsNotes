@@ -30,7 +30,31 @@ mongoose.connect("mongodb://localhost/newsNotes", { useNewUrlParser: true });
 
 // A GET route for scraping the echoJS website
 app.get("/scrape", function(req, res) {
-}
+    axios.get("https://www.delish.com/food-news/").then(function(response){
+        var $ = cheerio.load(response.data)
+
+        $(".full-item").each(function(i, element){
+
+             var result = {}
+
+             result.a = "https://www.delish.com/food-news"+ $(this).children("a").attr("href")
+             result.image= $(this).children(".full-item-image").children(".lazyimage").data("src")
+             result.title = $(this).children(".full-item-content").children("a").text()
+             result.summary = $(this).children(".full-item-content").children(".full-item-dek").children("p").text()
+
+             db.Article.create(result)
+             .then(function(dbArticle) {
+               // View the added result in the console
+               console.log(dbArticle);
+             })
+             .catch(function(err) {
+               // If an error occurred, log it
+               console.log(err);
+             });
+        })
+        console.log(results)
+    })
+})
 
 
 
