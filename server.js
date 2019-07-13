@@ -109,6 +109,30 @@ app.post("/deletedArticle", function(req,res){
     })
 })
 
+
+app.post("/note", function(req,res){
+    var title = req.body.title
+    var id = req.body.id
+    var entry = req.body.entry
+    db.Note.create({entry: entry}).then(function(dbNote){
+        return db.Article.findOneAndUpdate({_id:id}, { $push: { notes: dbNote._id } }).then(function(dbArticle){
+            res.json(dbArticle);
+    })
+    .catch(function(err) {
+      // If an error occurs, send it back to the client
+      res.json(err);
+    });
+        
+    })
+})
+
+app.get("/notes/:id", function(req,res){
+    db.Article.find({_id: req.params.id}).populate("notes").then(function(dbArticle){
+        res.json(dbArticle)
+    })
+})
+
+
     // Start the server
 app.listen(PORT, function() {
     console.log("App running on port " + PORT + "!");

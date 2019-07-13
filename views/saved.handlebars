@@ -1,31 +1,70 @@
 <h6>The best kind of news is:</h6>
 <h1>Food News</h1>
 <div class="container">
-{{#each articles}}
-  <div class="row">
-    <div class="col s12 m7 offset-l3 l6">
-      <div class="card">
-        <div class="card-image">
-          <img src="{{image}}">
+    {{#each articles}}
+    <div class="row">
+        <div class="col s12 m7 offset-l3 l6">
+            <div class="card">
+                <div class="card-image">
+                    <img src="{{image}}">
+                </div>
+                <div class="center-align card-content">
+                    <p class="card-title"><a href="{{a}}">{{title}}</a></p>
+                    <p>{{summary}}</p>
+                </div>
+                <div class="center-align card-action">
+                    <a id="makeNote{{_id}}" class="makeNote" href="#{{_id}}" data-makenoteid="{{_id}}"
+                        data-title="{{title}}">Make a note</a>
+                    <a id="deleteArticle" href="{{_id}}" data-deletearticleid="{{_id}}">Delete article</a>
+                </div>
+            </div>
         </div>
-        <div class="center-align card-content">
-          <p class="card-title"><a href="{{a}}">{{title}}</a></p>
-          <p>{{summary}}</p>
-        </div>
-        <div class="center-align card-action">
-          <a class="makeNote" data-makeNoteId="{{_id}}">Make a note</a>
-          <a id="deleteArticle" data-deletearticleid="{{_id}}">Delete article</a>
-        </div>
-      </div>
     </div>
-  </div>
-{{/each}}
+    {{/each}}
 </div>
+
+
+<!-- Modal Structure -->
+<div id="modal1" class="modal modal-fixed-footer">
+    <div class="modal-content center-align">
+        <h4>Notes for:</h4>
+        <h6 class="title"></h6>
+        <div class="savedNotes">
+            <p>Saved Notes:</p>
+            <div class="savedNotesGoHere"></div>
+        </div>
+
+        <div class="row">
+
+            <p>Add a Note Below!</p>
+            <form class="col s12">
+                <div class="row">
+                    <div class="input-field col s12 offset-l2 l8">
+                        <input id="newNote" type="text" class="validate">
+                        <label for="newNote">Enter Note</label>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <a class="waves-effect waves-light btn insertNote">Insert Note</a>
+
+    </div>
+    <div class="modal-footer">
+        <a href="#!" class="modal-close waves-effect waves-green btn-flat">Exit</a>
+    </div>
+</div>
+
+
+
 <script>
+
+    $(document).ready(function () {
+        $('.modal').modal();
+    });
     $(".container").show()
     $(".scrapeButton").hide()
 
-    $("body").on("click", "#deleteArticle", function(){
+    $("body").on("click", "#deleteArticle", function () {
         var id = $(this).data("deletearticleid")
         $.ajax({
             url: "/deletedArticle",
@@ -33,9 +72,66 @@
             data: {
                 id: id
             }
-        }).then(function(data){
+        }).then(function (data) {
             console.log(data)
             location.reload()
         })
+    })
+
+    $("body").on("click", ".makeNote", function () {
+        var dbId = $(this).data("makenoteid")
+        var modalLink = "modal" + dbId
+        var modalLinkID = "#modal" + dbId
+        var title = $(this).data("title")
+        $(".title").attr("id", title)
+        $(".title").data("id", dbId)
+        $(".title").text(title)
+        $(".savedNotesGoHere").attr("id", "notes" + dbId)
+        console.log(title)
+        console.log(modalLinkID)
+        $(".modal").attr("id", modalLink)
+
+        var queryUrl = "/notes/" + dbId
+        $.get(queryUrl).then(function (data) {
+            console.log(data)
+            
+            for (var i = 0; i < data[0].notes.length; i++) {
+                
+               var text = data[0].notes[i].entry
+               var newDiv = $("<div>").addClass("entries row")
+               var newtext = $("<p>").text(text).addClass("col l6")
+               var newButton = $("<button>").text("Delete").data("dbid", data[0].notes[i]._id).addClass("col l3 deleteNote")
+                newDiv.append(newtext, newButton)
+               var whereToGo = "#notes" + data[0]._id
+               $(whereToGo).append(newDiv)
+            }
+            $(modalLinkID).modal('open')
+        })
+
+
+    })
+
+
+    $(".insertNote").on("click", function () {
+        var entry = $("#newNote").val().trim()
+        $("#newNote").val("")
+        var title = $(".title").attr("id")
+        var id = $(".title").data("id")
+        console.log(title)
+        $.ajax({
+            url: "/note",
+            method: "POST",
+            data: {
+                title: title,
+                entry: entry,
+                id: id
+            }
+        }).then(function (data) {
+            console.log(data)
+        })
+    })
+
+    $("body").on("click", ".deleteNote", function(){
+        var id = $(this).data("dbid")
     })
 </script>
