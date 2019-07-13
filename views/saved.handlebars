@@ -20,18 +20,15 @@
             </div>
         </div>
     </div>
-    {{/each}}
-</div>
 
 
-<!-- Modal Structure -->
-<div id="modal1" class="modal modal-fixed-footer">
+    <div id="modal{{_id}}" class="modal modal-fixed-footer">
     <div class="modal-content center-align">
         <h4>Notes for:</h4>
-        <h6 class="title"></h6>
+        <h6 class="title" id="{{title}}" data-id="{{_id}}">{{title}}</h6>
         <div class="savedNotes">
             <p>Saved Notes:</p>
-            <div class="savedNotesGoHere"></div>
+            <div class="savedNotesGoHere" id="notes{{_id}}"></div>
         </div>
 
         <div class="row">
@@ -40,19 +37,25 @@
             <form class="col s12">
                 <div class="row">
                     <div class="input-field col s12 offset-l2 l8">
-                        <input id="newNote" type="text" class="validate">
-                        <label for="newNote">Enter Note</label>
+                        <input id="newNote{{_id}}" type="text" class="validate">
+                        <label for="newNote{{_id}}">Enter Note</label>
                     </div>
                 </div>
             </form>
         </div>
-        <a class="waves-effect waves-light btn insertNote">Insert Note</a>
+        <a class="waves-effect waves-light btn insertNote" id="insert{{_id}}" data-id="{{_id}}">Insert Note</a>
 
     </div>
     <div class="modal-footer">
         <a href="#!" class="modal-close waves-effect waves-green btn-flat">Exit</a>
     </div>
 </div>
+    {{/each}}
+</div>
+
+
+<!-- Modal Structure -->
+
 
 
 
@@ -83,15 +86,15 @@
         var modalLink = "modal" + dbId
         var modalLinkID = "#modal" + dbId
         var title = $(this).data("title")
-        $(".title").attr("id", title)
-        $(".title").data("id", dbId)
-        $(".title").text(title)
-        $(".savedNotesGoHere").attr("id", "notes" + dbId)
+        
+       
         console.log(title)
         console.log(modalLinkID)
-        $(".modal").attr("id", modalLink)
+        
 
         var queryUrl = "/notes/" + dbId
+
+        $(".savedNotesGoHere").empty()
         $.get(queryUrl).then(function (data) {
             console.log(data)
             
@@ -113,10 +116,16 @@
 
 
     $(".insertNote").on("click", function () {
-        var entry = $("#newNote").val().trim()
-        $("#newNote").val("")
-        var title = $(".title").attr("id")
-        var id = $(".title").data("id")
+        
+        var id = $(this).data("id")
+        console.log(id)
+        var whatNote = "#newNote" + id
+        console.log(whatNote)
+        var entry = $(whatNote).val().trim()
+        
+        $(whatNote).val("")
+        var title =  $(whatNote).data("id")
+        
         console.log(title)
         $.ajax({
             url: "/note",
@@ -128,6 +137,8 @@
             }
         }).then(function (data) {
             console.log(data)
+            alert("Note inserted!")
+            location.reload()
         })
     })
 
@@ -143,6 +154,7 @@
         }).then(function(data){
             console.log(data)
            console.log(whatModal)
+           alert("Note deleted!")
            location.reload()
         })
     })
