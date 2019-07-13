@@ -133,6 +133,14 @@ app.get("/notes/:id", function(req,res){
 })
 
 
+app.delete("/deleteNote", function(req,res){
+    var id = req.body.id
+    db.Note.deleteOne({_id:id}).then(function(dbNote){
+        res.json(dbNote)
+    })
+})
+
+
     // Start the server
 app.listen(PORT, function() {
     console.log("App running on port " + PORT + "!");

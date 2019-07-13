@@ -100,7 +100,7 @@
                var text = data[0].notes[i].entry
                var newDiv = $("<div>").addClass("entries row")
                var newtext = $("<p>").text(text).addClass("col l6")
-               var newButton = $("<button>").text("Delete").data("dbid", data[0].notes[i]._id).addClass("col l3 deleteNote")
+               var newButton = $("<button>").text("Delete").data("dbid", data[0].notes[i]._id).addClass("col l3 deleteNote").data("whatModal", "modal" + data[0]._id)
                 newDiv.append(newtext, newButton)
                var whereToGo = "#notes" + data[0]._id
                $(whereToGo).append(newDiv)
@@ -132,6 +132,18 @@
     })
 
     $("body").on("click", ".deleteNote", function(){
+        var whatModal = "#" + $(this).data("whatModal")
         var id = $(this).data("dbid")
+        $.ajax({
+            method: "DELETE",
+            url:"/deleteNote",
+            data:{
+                id: id
+            }
+        }).then(function(data){
+            console.log(data)
+           console.log(whatModal)
+           location.reload()
+        })
     })
 </script>
