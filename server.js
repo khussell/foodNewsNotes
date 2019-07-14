@@ -19,9 +19,12 @@ var cheerio = require("cheerio");
 // Require all models
 var db = require("./models");
 
-var PORT = 3030;
+var PORT = process.env.PORT || 3030;
 
+//Heroku
+var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/newsNotes";
 
+mongoose.connect(MONGODB_URI)
 
 //middleware
 // Use morgan logger for logging requests
