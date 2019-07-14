@@ -1,61 +1,71 @@
-<h6>The best kind of news is:</h6>
-<h1>Food News</h1>
-<div class="container">
-{{#each articles}}
-  <div class="row">
-    <div class="col s12 m7 offset-l3 l6">
-      <div class="card">
-        <div class="card-image">
-          <img src="{{image}}">
-        </div>
-        <div class="card-content">
-          <p class="card-title"><a href="{{a}}">{{title}}</a></p>
-          <p>{{summary}}</p>
-        </div>
-        <div class="card-action">
-          <a class="makeNote" data-makeNoteId="{{_id}}">Make a note</a>
-          <a class="deleteArticle" data-deleteArticleId="{{_id}}">Delete article</a>
-        </div>
-      </div>
+<div class="background"></div>
+<div class="aboutToLighten"></div>
+<div class="welcome">
+    <h6 class="subHead">The best kind of news is:</h6>
+    <h1 class="mainHead">Food News</h1>
+    <h6 class="subHead2">Click See Articles above to get news!</h6>
     </div>
-  </div>
-{{/each}}
+
+<div class="container articlesHere">
+
+    {{#each articles}}
+    <div class="row ">
+        <div class="col s12 m7 offset-l3 l6">
+            <div class="card">
+                <div class="card-image">
+                    <img src="{{image}}">
+                </div>
+                <div class="card-content">
+                    <p  class="card-title"><a  href="{{a}}">{{title}}</a></p>
+                    <p>{{summary}}</p>
+                </div>
+                <div class="card-action">
+                    <a class="makeNote" data-makeNoteId="{{_id}}">Make a note</a>
+                    <a class="deleteArticle" data-deleteArticleId="{{_id}}">Delete article</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{/each}}
 </div>
 
- <script>
-        $(".container").empty()
+<script>
+    $(".container").empty()
 
-        $(".scrapeButton").on("click", function () {
-
-            $.get("/articles").done(function (data) {
-                //console.log(data)
-                for (var i = 0; i < data.length; i++) {
-
-
-                    var newCard = $("<div class='row'><div class='col s12 m7 offset-l3 l6'><div class='card'><div class='card-image'><img src='" + data[i].image + "'></div><div class='center-align card-content'><p class='card-title'><a href='" + data[i].a + "'>" + data[i].title + "</a></p><p>" + data[i].summary + "</p></div><div class='center-align card-action'><a id='saveArticle' class='btn saveArticle' data-savearticleid='" + data[i]._id + "'>Save Article</a></div></div></div></div>")
-
-                    $(".container").append(newCard)
+    $(".scrapeButton").on("click", function () {
+        $(".welcome").hide()
+        $(".aboutToLighten").addClass("backgroundLighten")
+        $.get("/articles").done(function (data) {
+            //console.log(data)
+            for (var i = 0; i < data.length; i++) {
 
 
-                }
-            })
+                var newCard = $("<div class='row'><div class='col s12 m7 offset-l3 l6'><div class='card'><div class='card-image'><img src='" + data[i].image + "'></div><div class='center-align card-content'><p class='card-title'><a href='" + data[i].a + "'>" + data[i].title + "</a></p><p>" + data[i].summary + "</p></div><div class='center-align card-action'><a id='saveArticle' class='btn saveArticle' data-savearticleid='" + data[i]._id + "'>Save Article</a></div></div></div></div>")
+
+                $(".container").append(newCard)
+
+
+            }
+        })
+    })
+
+
+    $("body").on("click", "#saveArticle", function () {
+        var id = $(this).data("savearticleid")
+        console.log(id)
+        $.ajax({
+            method: "POST",
+            url: "/savedArticles",
+            data: {
+                id: id,
+            }
+        }).then(function (data) {
+            console.log(data);
+            alert("Article Saved")
+            location.reload()
         })
 
-
-        $("body").on("click", "#saveArticle", function () {
-            var id = $(this).data("savearticleid")
-            console.log(id)
-            $.ajax({
-                method: "POST",
-                url: "/savedArticles",
-                data: {
-                    id: id,
-                }
-            }).then(function (data) {
-                console.log(data);
-            })
-
-        })
+    })
 
        // $.get("/saved").done(function (data) {
        //     for (var i = 0; i < data.length; i++) {
@@ -66,8 +76,6 @@
       // $(".container").append(newCard)
      //       }
 //})
-        
-        
-    </script>
 
 
+</script>

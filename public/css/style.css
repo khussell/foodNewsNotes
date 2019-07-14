@@ -1,0 +1,154 @@
+.background{
+    background-image: url("../images/cuttingBoard.jpg");
+    background-size: cover;
+    width: 100%;
+    height: 900px;
+    margin-top: -200px;
+    text-align: center;
+    position: fixed;
+    z-index: -2;
+    opacity: .3;
+}
+
+.backgroundSaved{
+    background-image: url("../images/cuttingBoard.jpg");
+    background-size: cover;
+    width: 100%;
+    height: 900px;
+    margin-top: -200px;
+    text-align: center;
+    position: fixed;
+    z-index: -2;
+    opacity: .2;
+}
+
+.backgroundLighten{
+    background-color: white;
+    width: 100%;
+    height: 900px;
+    margin-top: -200px;
+    text-align: center;
+    position: fixed;
+    z-index: -1;
+    opacity: .4;
+}
+
+
+
+.mainHead{
+    text-align: center;
+    color: #424242;
+    font-size: 80px;
+    padding-top: 10px;
+}
+
+
+
+.subHead{
+    text-align: center;
+    padding-top: 180px;
+    color: #424242;
+    font-size: 25px;
+}
+
+.subHead2{
+    text-align: center;
+    padding-top: 60px;
+    color: #424242;
+    font-size: 20px;
+}
+
+
+footer{
+    height: 50px;
+    position: fixed;
+    bottom: 0;
+    z-index: 5;
+    width: 100%;
+    
+}
+
+.articlesHere{
+    margin-top: 70px;
+}
+
+.card{
+    border: 1px solid #424242 ;
+}
+
+img{
+    padding: 30px;
+}
+
+.titleStyle{
+    font-weight: bold;
+}
+
+
+.savedHead{
+    text-align: center;
+    padding-top: 20px;
+    
+    
+    margin-top: 100px;
+    padding-bottom: 20px;
+    
+}
+
+.savedArticleDiv{
+    margin-top: 60px;
+    margin-bottom: 60px;
+}
+
+.p{
+    text-align: center;
+    font-size: 20px;
+}
+
+.title{
+    font-size: 25px;
+    margin-top: 40px;
+    color: rgb(4, 4, 87);
+    
+}
+
+.savedNotes{
+    border: 1px solid black;
+    margin-top: 40px;
+    padding-top: 20px;
+    padding-bottom: 30px;
+    margin-left: 100px;
+    margin-right: 100px;
+}
+
+.entries{
+    background-color: rgb(231, 233, 233);
+    margin: 20px;
+    margin-left: 100px;
+    margin-right: 100px;
+ 
+}
+
+.deleteNote{
+    color: white;
+    background-color: #f44336;
+    border: #f44336 2px solid;
+    height: 30px;
+    width: 30px;
+    margin-right: 20px;
+   
+}
+
+.deleteNote:hover {
+    background-color: blue;
+}
+
+.pSaved{
+    padding-bottom: 10px;
+    font-size: 20px;
+}
+
+.pAddANote{
+    font-size: 20px;
+    margin-top: 30px;
+}
