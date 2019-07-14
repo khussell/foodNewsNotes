@@ -36,7 +36,7 @@ app.use(express.json());
 app.use(express.static("public"));
 
 // Connect to the Mongo DB
-mongoose.connect("mongodb://localhost/newsNotes", { useNewUrlParser: true });
+//mongoose.connect("mongodb://localhost/newsNotes", { useNewUrlParser: true });
 
 // Routes
 
