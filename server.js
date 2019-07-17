@@ -22,9 +22,16 @@ var db = require("./models");
 var PORT = process.env.PORT || 3030;
 
 //Heroku
-var MONGODB_URI = process.env.MONGODB_URI || "mongodb://khussell:flamingo3@ds221258.mlab.com:21258/heroku_llp017qz";
+mongoose.Promise = global.Promise
+mongoose.connect(
+ process.env.MONGODB_URI || "mongodb://khussell:flamingo3@ds221258.mlab.com:21258/heroku_llp017qz",
+{
+    useMongoClient: true
+}
+)
+;
 
-mongoose.connect(MONGODB_URI)
+
 
 //middleware
 // Use morgan logger for logging requests

@@ -105,8 +105,8 @@
                 
                var text = data[0].notes[i].entry
                var newDiv = $("<div>").addClass("entries row valign-wrapper left-align")
-               var newtext = $("<p>").text(text).addClass("col offset-l1 l9")
-               var newButton = $("<button>").text("X").data("dbid", data[0].notes[i]._id).addClass("col l1 deleteNote").data("whatModal", "modal" + data[0]._id)
+               var newtext = $("<p>").text(text).addClass("col s9 offset-s1 offset-l1 l9")
+               var newButton = $("<button>").text("X").data("dbid", data[0].notes[i]._id).addClass("col s2 l1 deleteNote").data("whatModal", "modal" + data[0]._id)
                 newDiv.append(newtext, newButton)
                var whereToGo = "#notes" + data[0]._id
                $(whereToGo).append(newDiv)
