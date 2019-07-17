@@ -4,6 +4,7 @@
 <p class="p">You may add any notes to any article or delete them as you please.</p>
 
 <div class="container savedArticleDiv">
+    <!--this page is rendered from back end and articles is passed in with it's properties-->
     {{#each articles}}
     <div class="row">
         <div class="col s12 m7 offset-l3 l6">
@@ -70,6 +71,8 @@
     $(".container").show()
     $(".scrapeButton").hide()
 
+
+//on click of delete article we will send a POST to back end with the id, this will change the saved status to false on the backend
     $("body").on("click", "#deleteArticle", function () {
         var id = $(this).data("deletearticleid")
         $.ajax({
@@ -84,6 +87,13 @@
         })
     })
 
+
+//on click of make note the associated modal will open with correct
+//the article id is already stored under data-makenoteid with the button 
+//with this a modal ID is created with modal+id
+//we will read whats on /notes/:id
+//loop through response data and append text and info where entries div is
+//open modal
     $("body").on("click", ".makeNote", function () {
         var dbId = $(this).data("makenoteid")
         var modalLink = "modal" + dbId
@@ -118,6 +128,8 @@
     })
 
 
+
+//when note insert button is pressed a POST will be sent  to /note to backend with entry, id and newNoteId
     $(".insertNote").on("click", function () {
         
         var id = $(this).data("id")
@@ -145,6 +157,8 @@
         })
     })
 
+
+//id of note is sent to backend to be deleted
     $("body").on("click", ".deleteNote", function(){
         var whatModal = "#" + $(this).data("whatModal")
         var id = $(this).data("dbid")
