@@ -4,16 +4,16 @@
     <h6 class="subHead">The best kind of news is:</h6>
     <h1 class="mainHead">Food News</h1>
     <h6 class="subHead2">Click See Articles above to get news!</h6>
-    </div>
+</div>
 
-<div class="container articlesHere">
+<div class="container articlesHere"></div>
 
 
 <script>
     $(".container").empty()
 
 
-//on click of see articles we will read /articles to get all article info, loop through data and make a new card for each one
+    //on click of see articles we will read /articles to get all article info, loop through data and make a new card for each one
     $(".scrapeButton").on("click", function () {
         $(".welcome").hide()
         $(".aboutToLighten").addClass("backgroundLighten")
@@ -32,7 +32,7 @@
     })
 
 
-//when save article button is pressed we will send the id to the back end for it to change saved property
+    //when save article button is pressed we will send the id to the back end for it to change saved property
     $("body").on("click", "#saveArticle", function () {
         var id = $(this).data("savearticleid")
         console.log(id)
@@ -50,7 +50,7 @@
 
     })
 
-    
+
 
 
 </script>
